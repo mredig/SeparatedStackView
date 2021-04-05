@@ -53,6 +53,13 @@ public class SeparatedStackView: UIStackView {
 	var separators: Set<UIView> = []
 	public var separatorSize: CGFloat = 1
 
+	private var previousArrangement: [UIView] = []
+	private var previousVisibilities: [Bool] = []
+
+	private var currentVisibilities: [Bool] {
+		arrangedSubviews.map(\.isHidden)
+	}
+
 	let separatorCache = SeparatorCache(generator: {
 		let separator = UIView()
 		separator.backgroundColor = .systemGray2
@@ -61,6 +68,14 @@ public class SeparatedStackView: UIStackView {
 
 	public override func layoutSubviews() {
 		super.layoutSubviews()
+
+		guard
+			previousArrangement != arrangedSubviews ||
+			previousVisibilities != currentVisibilities
+		else { return }
+		previousArrangement = arrangedSubviews
+		previousVisibilities = currentVisibilities
+
 		separators.forEach { separatorCache.queueView($0) }
 		separators = []
 

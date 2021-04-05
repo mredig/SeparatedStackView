@@ -1,7 +1,6 @@
 import UIKit
 
-class SubStack: UIStackView {
-
+public class SubStack: UIStackView {
 	class SeparatorCache {
 		private var cache: Set<UIView> = []
 
@@ -16,7 +15,6 @@ class SubStack: UIStackView {
 				cache.remove(view)
 				return view
 			} else {
-				print("generating")
 				return generator()
 			}
 		}
@@ -28,8 +26,8 @@ class SubStack: UIStackView {
 		}
 	}
 
-	typealias ConstraintGeneratorParameters = (stack: SubStack, view: UIView, separator: UIView)
-	var verticalConstraintGenerator: (ConstraintGeneratorParameters) -> [NSLayoutConstraint] = { parameters in
+	public typealias ConstraintGeneratorParameters = (stack: SubStack, view: UIView, separator: UIView)
+	public var verticalConstraintGenerator: (ConstraintGeneratorParameters) -> [NSLayoutConstraint] = { parameters in
 		let (stack, view, separator) = parameters
 
 		let constraints = [
@@ -41,7 +39,7 @@ class SubStack: UIStackView {
 		return constraints
 	}
 
-	var horizontalConstraintGenerator: (ConstraintGeneratorParameters) -> [NSLayoutConstraint] = { parameters in
+	public var horizontalConstraintGenerator: (ConstraintGeneratorParameters) -> [NSLayoutConstraint] = { parameters in
 		let (stack, view, separator) = parameters
 		let constraints = [
 			separator.heightAnchor.constraint(equalTo: stack.heightAnchor),
@@ -53,7 +51,7 @@ class SubStack: UIStackView {
 	}
 
 	var separators: Set<UIView> = []
-	var separatorSize: CGFloat = 1
+	public var separatorSize: CGFloat = 1
 
 	let separatorCache = SeparatorCache(generator: {
 		let separator = UIView()
@@ -61,7 +59,7 @@ class SubStack: UIStackView {
 		return separator
 	})
 
-	override func layoutSubviews() {
+	public override func layoutSubviews() {
 		super.layoutSubviews()
 		separators.forEach { separatorCache.queueView($0) }
 		separators = []

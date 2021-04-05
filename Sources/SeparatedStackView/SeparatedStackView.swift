@@ -89,3 +89,42 @@ public class SubStack: UIStackView {
 		}
 	}
 }
+
+import SwiftUI
+struct Preview: PreviewProvider {
+
+	struct StackPreview: UIViewRepresentable {
+		func makeUIView(context: Context) -> some UIView {
+			let stackview = SubStack()
+			stackview.axis = .vertical
+			stackview.distribution = .fillEqually
+			stackview.alignment = .fill
+			stackview.spacing = 8
+			stackview.separatorSize = 1
+			stackview.backgroundColor = .clear
+
+			let red = UIView()
+			red.backgroundColor = .red
+			let green = UIView()
+			green.backgroundColor = .green
+			let blue = UIView()
+			blue.backgroundColor = .blue
+
+			[red, green, blue].forEach { stackview.addArrangedSubview($0) }
+
+			func pete() {
+				green.isHidden.toggle()
+
+				DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: pete)
+			}
+			pete()
+			return stackview
+		}
+
+		func updateUIView(_ uiView: UIViewType, context: Context) {}
+	}
+
+	static var previews: some View {
+		StackPreview()
+	}
+}

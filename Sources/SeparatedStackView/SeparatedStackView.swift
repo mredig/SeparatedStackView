@@ -1,6 +1,6 @@
 import UIKit
 
-public class SubStack: UIStackView {
+public class SeparatedStackView: UIStackView {
 	class SeparatorCache {
 		private var cache: Set<UIView> = []
 
@@ -26,7 +26,7 @@ public class SubStack: UIStackView {
 		}
 	}
 
-	public typealias ConstraintGeneratorParameters = (stack: SubStack, view: UIView, separator: UIView)
+	public typealias ConstraintGeneratorParameters = (stack: SeparatedStackView, view: UIView, separator: UIView)
 	public var verticalConstraintGenerator: (ConstraintGeneratorParameters) -> [NSLayoutConstraint] = { parameters in
 		let (stack, view, separator) = parameters
 
@@ -95,7 +95,7 @@ struct Preview: PreviewProvider {
 
 	struct StackPreview: UIViewRepresentable {
 		func makeUIView(context: Context) -> some UIView {
-			let stackview = SubStack()
+			let stackview = SeparatedStackView()
 			stackview.axis = .vertical
 			stackview.distribution = .fillEqually
 			stackview.alignment = .fill

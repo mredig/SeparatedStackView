@@ -4,9 +4,11 @@ public class SeparatedStackView: UIStackView {
 	class SeparatorCache {
 		private var cache: Set<UIView> = []
 
-		let generator: () -> UIView
+		let generator: (UIColor) -> UIView
+		var defaultColor: UIColor
 
-		init(generator: @escaping () -> UIView) {
+		init(defaultColor: UIColor, generator: @escaping (UIColor) -> UIView) {
+			self.defaultColor = defaultColor
 			self.generator = generator
 		}
 
@@ -15,7 +17,7 @@ public class SeparatedStackView: UIStackView {
 				cache.remove(view)
 				return view
 			} else {
-				return generator()
+				return generator(defaultColor)
 			}
 		}
 
@@ -60,11 +62,15 @@ public class SeparatedStackView: UIStackView {
 		arrangedSubviews.map(\.isHidden)
 	}
 
-	let separatorCache = SeparatorCache(generator: {
+	let separatorCache = SeparatorCache(defaultColor: .systemGray2, generator: {
 		let separator = UIView()
-		separator.backgroundColor = .systemGray2
+		separator.backgroundColor = $0
 		return separator
 	})
+	public var defaultSeparatorColor: UIColor {
+		get { separatorCache.defaultColor }
+		set { separatorCache.defaultColor = newValue }
+	}
 
 	public override func layoutSubviews() {
 		super.layoutSubviews()
